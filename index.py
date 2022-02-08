@@ -2,7 +2,6 @@ import os
 import json
 import uvicorn
 
-from random import randint
 from typing import Optional
 from pydantic import BaseModel
 
