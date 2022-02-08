@@ -1,5 +1,6 @@
 import os
 import json
+import uvicorn
 
 from random import randint
 from typing import Optional
@@ -46,3 +47,6 @@ async def read_random_file(filename: str):
 		path = path[:-3]
 
 	return FileResponse(path)
+
+if __name__ == '__main__':
+	uvicorn.run("main:app",host='127.0.0.1', port=80, reload=True, debug=True, workers=2)
