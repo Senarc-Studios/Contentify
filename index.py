@@ -5,7 +5,7 @@ import uvicorn
 from typing import Optional
 from pydantic import BaseModel
 
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, Request
 from fastapi.responses import FileResponse
 
 from functions import Constants, Generate
@@ -39,7 +39,12 @@ class UploadPayload(BaseModel):
 	name: Optional[str]
 
 @app.post("/upload")
-async def upload_file(payload: UploadPayload):
+async def upload_file(request: Request, payload: UploadPayload):
+	if len(Constants.get("TOKENS")) != 0:
+		if Request.headers.get("Authorization") in Constants.get("TOKENS") == False:
+			return json.dumps({
+				"error": "Invalid Authorization Token."
+			}), 401, {'Content-Type': 'application/json'}
 	if format.startswith("."):
 		payload.format
 	file = payload.file
